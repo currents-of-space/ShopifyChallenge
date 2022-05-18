@@ -1,0 +1,107 @@
+{% extends "template.html" %}
+
+{% block content %}
+    <h1 class="mb-5 text-center">Manage Profile</h1>
+{#<div style="width: 18%; margin:auto; margin-top: 1%;">#}
+<div style="width: 18%; margin:auto; margin-top: 1%;">
+
+  <form method="POST" action="{% url 'manage' %}">
+    {% csrf_token %}
+
+
+{#    {% for field in editProfileForm %}#}
+{#      <div class="form-outline mb-4">#}
+{#        {{field}}#}
+{#        {{field.label}}#}
+{#        {% for error in field.errors %}#}
+{#          <p class="text-danger text-center">{{error}}</p>#}
+{#        {% endfor %}#}
+{#      </div>#}
+{#    {% endfor%}#}
+
+{#    {% for error in editProfileForm.non_field_errors %}#}
+{#      <p class="text-danger text-center">{{error}}</p>#}
+{#    {% endfor %}#}
+  <div >
+    <label>Email：
+        <input type="email" class="form-control left" placeholder="Please Input Email: " name="email" />
+    </label>
+    <br/>
+      {% if request.session.seller_name|default:'' != '' %}
+        <label>TelePhone：
+            <input type="tel" class="form-control left" placeholder="Please Input Telephone: " name="tel" />
+        </label>
+        <br/>
+      {% endif %}
+    <label>First Name：
+        <input type="text" class="form-control left" placeholder="Please Input First Name: " name="fname" />
+    </label>
+    <br/>
+    <label>Last Name：
+        <input type="text" class="form-control left" placeholder="Please Input Last Name: " name="lname" />
+    </label>
+    <br/>
+  </div>
+
+    {% for message in messages %}
+      {% if message.extra_tags == 'editProfile' %}
+        {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+            <p class="text-success text-center">{{message}}</p>
+        {% else %}
+            <p class="text-danger text-center">{{message}}</p>
+        {% endif %}
+      {% endif %}
+    {% endfor %}
+    <br/>
+    <br/>
+    <div class="col text-center">
+        <!-- Submit button -->
+        <button type="submit" class="btn btn-primary btn-block mb-4">Change Profile</button>
+    </div>
+  </form>
+</div>
+    <h1 class="mb-5 text-center" >Change Password</h1>
+    <div style="width: 18%; margin:auto; margin-top: 1%;">
+{#  <h1 class="mb-5 text-center" style="margin-top:20%;">Change Password</h1>#}
+
+  <form method="POST" action="{% url 'changePassword' %}">
+    {% csrf_token %}
+    <label>Password：
+        <input type="password" class="form-control" placeholder="Please Input NEW Password: " name="pwd_new" />
+    </label>
+    <br/>
+    <label>Confirm：
+        <input type="password" class="form-control" placeholder="Please Input Password Again: " name="pwd_conf" />
+    </label>
+  <br/>
+  <br/>
+
+{#    {% for error in editPasswordForm.non_field_errors %}#}
+{#      <p class="text-danger text-center">{{error}}</p>#}
+{#    {% endfor %}#}
+
+    {% for message in messages %}
+      {% if message.extra_tags == 'changePassword' %}
+        {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+            <p class="text-success text-center">{{message}}</p>
+        {% else %}
+            <p class="text-danger text-center">{{message}}</p>
+        {% endif %}
+      {% endif %}
+    {% endfor %}
+
+    <div class="col text-center">
+        <!-- Submit button -->
+        <button type="submit" class="btn btn-primary btn-block mb-4">Change Password</button>
+    </div>
+  </form>
+    <form method="POST" action="{% url 'deactivate' %}">
+        {% csrf_token %}
+        <div class="col text-center">
+        <!-- Submit button -->
+        <button type="submit" class="btn btn-primary btn-block mb-4">Deactivate Account</button>
+    </div>
+    </form>
+
+</div>
+{% endblock %}

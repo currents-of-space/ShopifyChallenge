@@ -1,0 +1,52 @@
+{% extends "template.html" %}
+
+{% block content %}
+    {% for message in messages %}
+      {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+          <div class="d-flex justify-content-center align-items-center mb-3 bg-success text-light rounded" style="height: 50px;">
+            <span class="fw-bold">{{message}}</span>
+          </div>
+      {% else %}
+        <div class="d-flex justify-content-center align-items-center mb-3 bg-danger text-light rounded" style="height: 50px;">
+            <span class="fw-bold">{{message}}</span>
+        </div>
+      {% endif %}
+    {% endfor %}
+<div style="width: 18%; margin:auto; margin-top: 10%;">
+  <h1 class="mb-5 text-center">Manage Profile</h1>
+
+
+    <form method="POST" action="{% url 'report' %}">
+        {% csrf_token %}
+            <div >
+                {% if request.session.seller_name|default:'' != '' %}
+                    <label>Reported User Name：
+                        <input type="text" class="form-control left" placeholder="Please Input User Name you want to report: " name="user_name" />
+                    </label>
+                    <br/>
+                {% endif %}
+                {% if request.session.user_name|default:'' != '' %}
+                    <label>Report Seller Name：
+                        <input type="text" class="form-control left" placeholder="Please Input Seller Name you want to report: " name="seller_name" />
+                    </label>
+                    <br/>
+                {% endif %}
+                <label for="supervisorid">Supervisor: </label>
+                    <select name="super_id" id="supervisorid",float="left" >
+                        <option value=""> </option>
+                        <option value=1>Supervisor 1</option>
+                        <option value=2>Supervisor 2</option>
+                        <option value=3>Supervisor 3</option>
+                    </select>
+                <label>Report Issue：
+{#                    <textarea  class="form-control left" placeholder="Please Input Last Name: " name="complain_content" />#}
+                    <textarea  class="form-control left" placeholder="Please Input Last Name: "  rows="10"  cols="30" name="complain_content" >
+
+                    </textarea>
+                </label>
+                <br/>
+                <button type="submit" class="btn btn-primary btn-block mb-4">Report</button>
+            </div>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,158 @@
+{% extends "template.html" %}
+
+{% load static %}
+{% load filters %}
+
+{% block content %}
+    {% for message in messages %}
+      {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+{#        <p class="text-success text-center">{{message}}</p>#}
+          <div class="d-flex justify-content-center align-items-center mb-3 bg-success text-light rounded" style="height: 50px;">
+            <span class="fw-bold">{{message}}</span>
+          </div>
+      {% else %}
+        <div class="d-flex justify-content-center align-items-center mb-3 bg-danger text-light rounded" style="height: 50px;">
+            <span class="fw-bold">{{message}}</span>
+        </div>
+      {% endif %}
+
+    {% endfor %}
+<!--Section: Block Content-->
+<section style="margin-top:10%;">
+    {% if cartItems != None %}
+    <!--Grid row-->
+    <div class="row">
+        <!--Grid column-->
+        <div class="col-lg-8">
+            <div class="mb-3">
+                <div class="pt-4">
+{#                    <h5 class="mb-4">Cart (<span>{{cartItems|getProductNum}}</span> items)</h5>#}
+                    <h5 class="mb-4">Order</h5>
+                    {% for item in cartItems %}
+                    <div class="row mb-4">
+                        <div class="col-md-5 col-lg-3 col-xl-3 mb-3">
+                            <img class="w-100" src="{% static item|fromDictGetItemAttribute:'product,productPic' %}" alt="productPic">
+                        </div>
+                        <div class="col-md-7 col-lg-9 col-xl-9">
+                            <div class="d-flex justify-content-between mb-3">
+                                <div>
+                                    <h5>{{item|fromDictGetItemAttribute:'product,productName'}}</h5>
+                                    <p class="mb-3 text-muted text-uppercase small">{{item|fromDictGetItemAttribute:'product,productCatagory'}}</p>
+                                </div>
+{#                                <div>#}
+{#                                    <input class="form-control text-center" id="productQuantity{{item|fromDictGetItemAttribute:'product,id'}}" min="0" name="quantity"#}
+{#                                        value="{{item|fromDictGetItemValue:'quantity'}}" type="number"#}
+{#                                        onblur="productQuantityChanged({{item|fromDictGetItemAttribute:'product,id'}})">#}
+{#                                </div>#}
+                            </div>
+{#                            <div class="d-flex justify-content-between align-items-center">#}
+                                <div>
+                                    <a type="button" class="btn btn-danger btn-sm mr-1"
+                                        href="{% url 'removeFromCart' item|fromDictGetItemAttribute:'product,productId' %}">Delete item</a>
+                                </div>
+{#                                <p class="mb-0"><span><strong>${{item|calculateCartItemValue}}</strong></span></p>#}
+{#                            </div>#}
+                        </div>
+                    </div>
+                    <hr class="mb-4">
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <!--Grid column-->
+
+        <!--Grid column-->
+        <div class="col-lg-4">
+            <!-- Card -->
+            <div class="mb-3">
+                <div class="pt-4">
+                    <h5 class="mb-3">The total amount of</h5>
+                    <ul class="list-group list-group-flush">
+                        <li
+                            class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
+                            Temporary amount
+                            <span>${{cartItems|calculateCartValue}}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                            Shipping
+                            <span>${{deliveryCost}}</span>
+                        </li>
+                        <li
+                            class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">
+                            <div>
+                                <strong>The total amount of</strong>
+                            </div>
+                            <span><strong>${{cartItems|calculateCartFinalValue:deliveryCost}}</strong></span>
+                        </li>
+                    </ul>
+                    <form class="mt-5" method="POST" action="{% url 'confirmOrder' %}">
+                        {% csrf_token %}
+                        <h5 class="mb-4">Buyer's Information:</h5>
+{#                        {% for field in deliveryAddressForm %}#}
+{#                            {{field.label}}#}
+{#                            {{field}}#}
+{#                        {% endfor %}#}
+                        <label>Buyer's Name：
+                            <input class="form-control text-center" type="text"  name="buyername" />
+                        </label>
+                        <label>Buyer's E-mail：
+                            <input class="form-control text-center" type="email"name="buyeremail" />
+                        </label>
+                        <label>Buyer's Phone：
+                            <input class="form-control text-center" type="tel"  name="buyerphone" />
+                        </label>
+                        <label>Buyer's Note：
+                            <input class="form-control text-center" type="text"  name="buyernote" />
+                        </label>
+                        <br/>
+                        <label for="paymethod">Payment Method: </label>
+                        <br/>
+                            <select name="pay_method" id="paymethod",float="left" >
+                                <option value=""> </option>
+                                <option value="Cash">Cash</option>
+                                <option value="Zella">Zella </option>
+                                <option value="Venmo">Venmo </option>
+                                <option value="Credit_Card">Credit Cart</option>
+                            </select>
+                        <hr class="mb-4">
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary btn-block" onclick="return confirmOrder()">Submit Order</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!-- Card -->
+        </div>
+        <!--Grid column-->
+    </div>
+    <!-- Grid row -->
+    {% else %}
+
+    <div class="text-center">
+        <h1 class="mb-5">No Product will be purchased.</h1>
+        <a type="button" class="btn btn-primary" href="{% url 'index' %}">Main page</a>
+    </div>
+    {% endif %}
+
+
+</section>
+<!--Section: Block Content-->
+
+<script>
+    {#function productQuantityChanged(id){#}
+    {#    inputId = "productQuantity" + id;#}
+    {#    quantity = document.getElementById(inputId).value#}
+    {#    window.location.href = "{% url 'updateCartItemQuantity' 9999 9998%}".replace(/9999/, id).replace(/9998/, quantity);#}
+    {#}#}
+
+    function confirmOrder(){
+        var agree = confirm("Are you sure you wish to confirm the order?");
+        if(agree){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+</script>
+{% endblock %}

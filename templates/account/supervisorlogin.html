@@ -1,0 +1,40 @@
+{% extends "template.html" %}
+
+{% block content %}
+<div style="width: 25%; margin:auto; margin-top: 10%;">
+  <h1 class="mb-5 text-center">Supervisor Login</h1>
+  <form method="POST" action="{% url 'supervisorlogin' %}">
+    {% csrf_token %}
+    <!-- Username input -->
+    <div class="form-outline mb-4">
+        <label class="form-label" for="super_name">Supervisor Name:</label>
+      <input type="text" name="super_name" class="form-control" />
+
+    </div>
+
+    <!-- Password input -->
+    <div class="form-outline mb-4">
+        <label class="form-label" for="super_pwd">Password</label>
+      <input type="password" name="super_pwd" class="form-control" />
+
+    </div>
+
+    <div class="col text-center">
+      <!-- Submit button -->
+      <button type="submit" class="btn btn-primary btn-block mb-4">Sign in</button>
+
+    </div>
+
+
+
+    {% for message in messages %}
+      {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+        <p class="text-success text-center">{{message}}</p>
+      {% else %}
+        <p class="text-danger text-center">{{message}}</p>
+      {% endif %}
+    {% endfor %}
+
+  </form>
+</div>
+{% endblock %}

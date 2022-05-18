@@ -1,0 +1,83 @@
+{% extends "template.html" %}
+{% load static %}
+{% block content %}
+<!--Section: Block Content-->
+<section style="margin-top: 10%;">
+  
+  {% for message in messages %}
+    {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+      <div class="d-flex justify-content-center align-items-center mb-3 bg-success text-light rounded" style="height: 50px;">
+        <span class="fw-bold">{{message}}</span>
+      </div>
+    {% else %}
+      <div class=" d-flex justify-content-center align-items-center mb-3 bg-danger text-light rounded" style="height: 50px;">
+        <span class="fw-bold">{{message}}</span>
+      </div>
+    {% endif %}
+  {% endfor %}
+
+  
+
+{#  <form method="POST" action="{% url 'index' %}">#}
+{#    {% csrf_token %}#}
+{#    <div class="row p-2 b-3 border rounded ">#}
+{#      <div class="col-lg-7 mb-1 mt-1">#}
+{#        {{form.filterChoice}}#}
+{#      </div>#}
+{#      <div class="col-lg d-flex justify-content-center align-items-center mb-1 mt-1">#}
+{#        {{form.isOnSale}}#}
+{#        {{form.isOnSale.label}}#}
+{#      </div>#}
+{#      <div class="col-lg-2 d-flex justify-content-center align-items-center mb-1 mt-1">#}
+{#        {{form.isAvailable}}#}
+{#        {{form.isAvailable.label}}#}
+{#      </div>#}
+{#      <div class="col-sm text-center mb-1 mt-1">#}
+{#        <button type="submit" class="btn btn-primary">Filtruj</button>#}
+{#      </div>#}
+{#    </div>#}
+{#  </form>#}
+
+    <!-- Grid row -->
+    <div class="row" style="margin-top: 10%;">
+      {% for product in products %}
+        <!-- Grid column -->
+        <div class="col-md-6 col-lg-3 mb-5">
+          <!-- Card -->
+          <div class="">
+            <div class="" style="height: 300px;">
+              <a href="{% url 'productDetails' product.productId %}">
+                  <img class="img-fluid rounded w-100 h-100" src="{% static product.productPic %}" alt="product" >
+              </a>
+            </div>
+            <div class="text-center pt-4">
+              <h5>{{product.productName}}</h5>
+              <p class="mb-2 text-muted text-uppercase small">{{product.productCatagory}}</p>
+              <hr>
+{#              {% if product.IsOnSale %}#}
+{#                <h6 class="mb-3 text-success">Discount {{product.Price}} $</h6>#}
+{#              {% else %}#}
+{#                <h6 class="mb-3">{{product.Price}} $</h6>#}
+{#                #}
+{#              {% endif %}#}
+                <h6 class="mb-3">$ {{product.productPrice}} </h6>
+{#              {% if product.IsAvailable %}#}
+{#                <a type="button" class="btn btn-primary btn-sm mb-2" href="{% url 'addToOrder' product.id 1 %}">Make Order</a>#}
+{#              {% else %}#}
+{#                <button type="button" class="btn btn-primary btn-sm mb-2" disabled>Sold</button>#}
+{#              {% endif %}#}
+                <a type="button" class="btn btn-primary btn-sm mb-2" href="{% url 'addToOrder' product.productId 1 %}">Make Order</a>
+                <a type="button" class="btn btn-light btn-sm mb-2" href="{% url 'productDetails' product.productId %}">Details</a>
+{#              {% if product.IsOnSale %}#}
+{#                <a type="button" class="btn btn-success btn-sm mb-2" href="{% url 'productDetails' product.id %}">Discount</a>#}
+{#              {% endif %}#}
+            </div>
+          </div>
+        <!-- Card -->
+        </div>
+      {% endfor %}
+    </div>
+    <!-- Grid row -->
+  </section>
+  <!--Section: Block Content-->
+{% endblock %}

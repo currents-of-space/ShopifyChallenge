@@ -1,0 +1,45 @@
+{% extends "template.html" %}
+
+{% block content %}
+<div style="width: 25%; margin:auto; margin-top: 10%;">
+  <h1 class="mb-5 text-center">Seller Login</h1>
+  <form method="POST" action="{% url 'sellerlogin' %}">
+    {% csrf_token %}
+    <!-- Username input -->
+    <div class="form-outline mb-4">
+        <label class="form-label" for="sellername">Username</label>
+      <input type="text" name="sellername" class="form-control" />
+
+    </div>
+
+    <!-- Password input -->
+    <div class="form-outline mb-4">
+        <label class="form-label" for="sellerpwd">Password</label>
+      <input type="password" name="sellerpwd" class="form-control" />
+
+    </div>
+
+    <div class="col text-center">
+      <!-- Submit button -->
+      <button type="submit" class="btn btn-primary btn-block mb-4">Sign in</button>
+
+    </div>
+
+
+
+    {% for message in messages %}
+      {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+        <p class="text-success text-center">{{message}}</p>
+      {% else %}
+        <p class="text-danger text-center">{{message}}</p>
+      {% endif %}
+    {% endfor %}
+
+    <!-- Register buttons -->
+    <div class="text-center">
+      <p>Not a member? <a href="/user/registration">Register</a></p>
+        <p>Are you a Customer? <a href="/user/login/">I am Customer</a></p>
+    </div>
+  </form>
+</div>
+{% endblock %}

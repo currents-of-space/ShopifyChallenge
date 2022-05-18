@@ -1,0 +1,58 @@
+{% extends "template.html" %}
+
+{% block content %}
+    {% for message in messages %}
+      {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+{#        <p class="text-success text-center">{{message}}</p>#}
+          <div class="d-flex justify-content-center align-items-center mb-3 bg-success text-light rounded" style="height: 50px;">
+            <span class="fw-bold">{{message}}</span>
+          </div>
+      {% else %}
+        <div class="d-flex justify-content-center align-items-center mb-3 bg-danger text-light rounded" style="height: 50px;">
+            <span class="fw-bold">{{message}}</span>
+        </div>
+      {% endif %}
+
+    {% endfor %}
+
+{#<section style="margin-top:5%">#}
+<section style="margin-top:5%">
+<h1 class="mb-5 text-center">{{ request.session.seller_name }}'s Order</h1>
+    {% if order_list|length > 0 %}
+{#    {% if 1 %}#}
+    <div class="table-responsive-xxl">
+        <table class="table table-bordered text-center" style="margin-top:10%">
+            <thead>
+                <tr>
+                    <th scope="col">OrderId</th>
+                    <th scope="col">Product Name</th>
+                    <th scope="col">Total Price</th>
+                    <th scope="col">Order Status</th>
+                    <th scope="col">Order Date</th>
+                    <th scope="col">Order Note</th>
+{#                    <th scope="col">Confirmation</th>#}
+                </tr>
+            </thead>
+
+                {% for order in order_list %}
+                    <tbody>
+                    <td>{{ order.orderNo }}</td>
+                    <td>{{ order.productName }}</td>
+                    <td>{{ order.orderPrice }}</td>
+                    <td>{{ order.orderStatus }}</td>
+                    <td>{{ order.orderDate }}</td>
+                    <td>{{ order.orderNote }}</td>
+                    </tbody>
+
+                {% endfor %}
+
+        </table>
+    </div>
+    {% else %}
+    <div class="text-center">
+        <h1 class="mb-5">Lack of the orders in the system</h1>
+        <a type="button" class="btn btn-primary" href="{% url 'index' %}">Main page</a>
+    </div>
+    {% endif %}
+</section>
+{% endblock %}

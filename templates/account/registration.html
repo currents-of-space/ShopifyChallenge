@@ -1,0 +1,29 @@
+{% extends "template.html" %}
+
+{% block content %}
+<div style="width: 25%; margin:auto; margin-top: 10%;">
+  <h1 class="mb-5 text-center">Registration</h1>
+  <form method="POST" action="{% url 'registration' %}">
+    {% csrf_token %}
+
+    {% for field in form %}
+      <div class="form-outline mb-4">
+        {{field}}
+        {{field.label}}
+        {% for error in field.errors %}
+          <p class="text-danger text-center">{{error}}</p>
+        {% endfor %}
+      </div>
+    {% endfor%}
+
+    {% for error in form.non_field_errors %}
+      <p class="text-danger text-center">{{error}}</p>
+    {% endfor %}
+    
+    <div class="col text-center">
+        <!-- Submit button -->
+        <button type="submit" class="btn btn-primary btn-block mb-4">Sign up</button>
+    </div>
+  </form>
+</div>
+{% endblock %}

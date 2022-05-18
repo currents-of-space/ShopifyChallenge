@@ -1,0 +1,93 @@
+{% extends "template.html" %}
+
+{% block content %}
+<section style="margin-top:10%">
+    {% if orders|length > 0 %}
+    <div class="table-responsive-xxl">
+        <table class="table table-bordered text-center" style="margin-top:10%">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Delivery Address</th>
+                    <th scope="col">Order Elements</th>
+                    <th scope="col">Total Price</th>
+                    <th scope="col">Modification</th>
+                    <th scope="col">Creation</th>
+                    <th scope="col">Confirmation</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                    <tr>
+                        <th scope="row">{{order.id}}</th>
+                        <td>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th scoppe="col">Name</th>
+                                        <th scoppe="col">Surname</th>
+                                        <th scoppe="col">E-mail</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>{{order.deliveryAddress.firstName}}</td>
+                                        <td>{{order.deliveryAddress.lastName}}</td>
+                                        <td>{{order.deliveryAddress.email}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                        <td>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th scoppe="col">Id</th>
+                                        <th scoppe="col">Name</th>
+                                        <th scoppe="col">Price</th>
+                                        <th scoppe="col">Quantity</th>
+                                    </tr>
+                                </thead>
+{#                                <tbody>#}
+{#                                    {% for orderElement in order|getSetFromManyToOneRelationship:'orderelement_set' %}#}
+{#                                    <tr>#}
+{#                                        <th scope="row">{{orderElement.product.id}}</td>#}
+{#                                        <td>{{orderElement.product.Name}}</td>#}
+{#                                        <td>{{orderElement.product.Price}}$</td>#}
+{#                                        <td>{{orderElement.quantity}}</td>#}
+{#                                    </tr>#}
+{#                                    {% endfor %}#}
+{#                                </tbody>#}
+                            </table>
+                        </td>
+                        <td>{{order|calculateTotalOrderPrice}}$</td>
+                        <td>
+                            {{order.updated_at|date:"H:i"}}<br>
+                            {{order.updated_at|date:"d M Y"}}
+                        </td>
+                        <td>
+                            {{order.created_at|date:"H:i"}}<br>
+                            {{order.created_at|date:"d M Y"}}
+                        </td>
+                        <td>
+                            {% if order.isConfirmed %}
+                            <span class="rounded text-light bg-success d-block mb-1">Confirmed</span>
+                            <a class="btn btn-danger" href="{% url 'changeOrderConfirmation' order.id %}">Cancel</a>
+                            {% else %}
+                            <span class="rounded text-light bg-danger d-block mb-1">Not Confirmed</span>
+                            <a class="btn btn-success" href="{% url 'changeOrderConfirmation' order.id %}">Confirm</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="text-center">
+        <h1 class="mb-5">Lack of the orders in the system</h1>
+        <a type="button" class="btn btn-primary" href="{% url 'index' %}">Main page</a>
+    </div>
+    {% endif %}
+</section>
+{% endblock %}

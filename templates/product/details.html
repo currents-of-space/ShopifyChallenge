@@ -1,0 +1,60 @@
+{% extends "template.html" %}
+
+{% load static %}
+
+{% block content %}
+    <!--Section: Block Content-->
+    <section class="mb-5" style="margin-top: 10%;">
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <div class="row">
+                    <div class="col-12">
+                        <img src="{% static product.productPic %}" class="img-fluid rounded" alt="product">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <h5>{{product.productName}}</h5>
+                <p class="mb-2 text-muted text-uppercase small">{{product.productCatagory}}</p>
+{#                {% if product.IsOnSale %}#}
+{#                    <p class="text-success"><strong>Discount ${{product.Price}}</strong></span></p>#}
+{#                {% else %}#}
+{#                    <p><strong>${{product.Price}}</strong></span></p>#}
+{#                {% endif %}#}
+                <p><strong>${{product.productPrice}}</strong></span></p>
+                <p class="pt-1">{{product.productInfo}}</p>
+                <hr>
+
+                <div class="w-25">
+                    <label class="form-label" for="typeNumber" >Quantity</label>
+                    <input class="form-control text-center" id="typeNumber" min="1" max="1" name="quantity" value="1" type="number" >
+{#                    <input class="form-control text-center" id="typeNumber" min="0" name="quantity" value="1" type="number" >#}
+                </div>
+                <hr>
+                <a type="button" class="btn btn-primary mr-1 mb-2" id="addToOrder" onclick="addToOrder()">Make Order</a>
+{#                {% if product.IsAvailable %}#}
+{#                    <a type="button" class="btn btn-primary mr-1 mb-2" id="addToOrder" onclick="addToOrder()">Make Order</a>#}
+{#                    #}
+{#                {% else %}#}
+{#                    <button type="button" class="btn btn-primary mr-1 mb-2" disabled>Sold</button>#}
+{#                {% endif %}#}
+            </div>
+        </div>
+  </section>
+  <!--Section: Block Content-->
+
+    <script>
+        function addToOrder(){
+            quantity = document.getElementById('typeNumber').value;
+            if(quantity > 0){
+                var a = document.getElementById('addToOrder');
+                a.href = "{% url 'addToOrder' product.productId 9999 %}".replace(/9999/, document.getElementById('typeNumber').value);
+            }
+            else{
+                window.alert("The number of products must be positive.");
+            }
+        }
+    </script>
+{% endblock %}
+
