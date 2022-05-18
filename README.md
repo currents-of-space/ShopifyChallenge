@@ -43,3 +43,20 @@ python manage.py migrate
 python manage.py runserver
 ```
 
+## Problems running on Replit
+
+I tried to deploy this web application on replit but met the following problem.
+
+Replit doesn't have MySQL installed, so I tried to install it myself.
+
+```shell
+apt-get install mysql-shell
+E: Could not open lock file /var/lib/dpkg/lock-frontend - open (13: Permission denied)
+E: Unable to acquire the dpkg frontend lock (/var/lib/dpkg/lock-frontend), are you root?
+```
+
+But apparently I don't have the permission to do that.
+
+Then I tried to follow this tutorial to create a remote MySQL: https://replit.com/talk/learn/Create-Account-Database-MySQL-nodejs/20263. But RemoteMySQL site doesn't allow creation of new db's.
+
+Terribly sorry but I can only present this partial result.
